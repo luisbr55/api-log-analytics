@@ -5,26 +5,45 @@ from datetime import datetime, timedelta, timezone
 
 NUM_ROWS = 10_000
 
-# TODO 1: define una lista de endpoints (por ejemplo "/api/users", "/api/orders"...)
-ENDPOINTS = []
 
-# TODO 2: define los métodos HTTP posibles
-METHODS = []
+ENDPOINTS = ["/api/users", "/api/orders", "/api/products", "/api/login", "/api/admin"]
+
+
+METHODS = ["GET", "POST", "PUT","DELETE"]
 
 
 def generate_row():
-    # TODO 3: genera un request_id único (pista: uuid.uuid4())
-    # TODO 4: genera un timestamp aleatorio dentro de los últimos 7 días
+    
+    request_id = str(uuid.uuid4())[:12]
+    
+    ahora = datetime.now()
+    hace_7_dias = ahora - timedelta(days=7)
+
+    inicio = int(hace_7_dias.timestamp())
+    fin = int(ahora.timestamp())
+
+    ts_aleatorio = random.randint(inicio,fin)
+    timestamp = datetime.fromtimestamp(ts_aleatorio, tz= timezone.utc).isoformat()
+
+   
     # TODO 5: elige un endpoint y un método al azar
+    random_endpoint = random.choice(ENDPOINTS)
+    random_method = random.choice(METHODS)
+
+
     # TODO 6: elige un status_code (¿todos con la misma probabilidad?)
     # TODO 7: genera un response_time_ms (¿debería ser igual para todos los endpoints?)
     # TODO 8: genera un client_id
-    pass
+    return {"request_id": request_id,
+            "timestamp": timestamp,
+            "endpoint": random_endpoint,
+            "method": random_method
+            }
 
 
 def main():
-    # TODO 9: abre data/logs.csv con csv.DictWriter, escribe el encabezado
-    #         y luego NUM_ROWS filas llamando a generate_row()
+    print(generate_row())
+    print(generate_row())
     pass
 
 
